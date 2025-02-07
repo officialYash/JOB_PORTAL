@@ -20,8 +20,9 @@ export const register = async (req,res)=>{
         password:hashedPassword,
         role, 
     })
+    return res.status(200).json({message:"Account created successfully",success:true});
     } catch (error) {
-        
+        console.log(error);
     }
 
 }
@@ -45,7 +46,21 @@ export const login = async(req,res)=>{
     if(role !== user.role){
         return res.status(400).json({message:"Account doesn't  exist with current role",success:false});
     }
+    //generate token
+    const tokenData = {
+        userId:user._id,
+    } 
+    const token = jwt.sign(tokenData,process.env.SECRET_KEY,{expiresIn:"1d"});
+     user = {
+        _id:user._id,
+        fullname:user.fullname,
+        email:user.email,
+        phoneNumber:user.phoneNumber,
+        role:user.role,
+        profile:user.profile
+     }
+    return res.status(200).cookie("token",token,{maxAge:1*24*60*60*1000,httpOnly:true ,sameSite:true}).json({message:`Welcome Back  ${user.fullname}`, user,success:true});
   } catch(error) {
-        
+        console.log(error);
     }
 }
