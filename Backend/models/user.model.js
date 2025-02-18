@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
         required:true,
      },
      password:{type:String,required:true},
-     role:{type:String,enum:['Student','recuirter'],required:true},
+     role:{type:String,enum:['Student','recruiter'],required:true},
      profile:{
         bio:{type:String},
         skills:[{type:String}],

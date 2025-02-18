@@ -1,4 +1,4 @@
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
@@ -41,7 +41,7 @@ export const login = async (req, res) => {
         .json({ message: "Something is missing", success: false });
     }
 
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (!user) {
       return res
         .status(400)
