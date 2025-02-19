@@ -58,17 +58,19 @@ export const getAllJobs = async (req, res) => {
           title: {
             $regex: key,
             $options: "i",
-          },
+          }
         },
         {
           description: {
             $regex: key,
             $options: "i",
-          },
+          }
         },
       ],
     };
-    const jobs = await Job.find(query);
+    const jobs = await Job.find(query)
+      .populate({ path: "company"})
+      .sort({ createdAt: -1 });
     if (!jobs) {
       return res
         .status(404)
